@@ -64,10 +64,6 @@ function draw() {
 		circles[circles.length - 1].y += pixel / 10;
 	}
 
-	if (circles.length > 0 && circles[circles.length - 1].y == borders[curry]) {
-		borders[curry] -= pixel;
-	}
-
 	if (circles.length > 0 && circles[circles.length - 1].y == borders[curry] && check_win("o")) {
 		p1_scr++;
 		console.log("player 1 wins");
@@ -91,7 +87,10 @@ function draw() {
 }
 
 function mouseClicked() {
-	if (x_mar < mouseX && mouseX < x_mar + (col * pixel) && (curry == undefined || borders[curry] + pixel == circles[circles.length - 1].y) && borders[Math.floor(((mouseX - x_mar) / pixel))] > y_mar) {
+	if (x_mar < mouseX && mouseX < x_mar + (col * pixel) && (curry == undefined || borders[curry] == circles[circles.length - 1].y) && borders[Math.floor(((mouseX - x_mar) / pixel))] > y_mar + pixel) {
+		if (circles.length > 0 && circles[circles.length - 1].y == borders[curry]) {
+			borders[curry] -= pixel;
+		}
 		circles.push({ x: (Math.floor(((mouseX - x_mar) / pixel)) * pixel) + (pixel / 2) + x_mar, y: y_mar - pixel, c: (p1 ? "blue" : "red") });
 		p1 = !p1;
 		curry = Math.floor(((mouseX - x_mar) / pixel));
