@@ -20,8 +20,10 @@ var pause = false;
 
 var board = ((new Array(row)).fill(0)).map(ele => (new Array(col)).fill("-"));
 
+var canvas;
+
 function setup() {
-	var canvas = createCanvas(10 * pixel, 10 * pixel);
+	canvas = createCanvas(10 * pixel, 10 * pixel);
 
 	canvas.center("horizontal");
 
@@ -152,3 +154,6 @@ document.addEventListener('keydown', (event) => {
 		pause = !pause;
 	}
 });
+
+window.addEventListener("resize", canvas.center("horizontal"));
+

@@ -46,7 +46,9 @@
         },
         {
           "name": "@electron-forge/maker-deb",
-          "config": {}
+          "config": {
+            "name": "connect4_electron"
+          }
         },
         {
           "name": "@electron-forge/maker-rpm",
