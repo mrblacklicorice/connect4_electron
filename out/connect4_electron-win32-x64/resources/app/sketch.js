@@ -20,8 +20,10 @@ var pause = false;
 
 var board = ((new Array(row)).fill(0)).map(ele => (new Array(col)).fill("-"));
 
+var canvas;
+
 function setup() {
-	var canvas = createCanvas(10 * pixel, 10 * pixel);
+	canvas = createCanvas(10 * pixel, 10 * pixel);
 
 	canvas.center("horizontal");
 
@@ -53,9 +55,6 @@ function draw() {
 		rect((x_mar + ((col - 1) * pixel)) - (pixel / 2), (y_mar / 2) - (pixel / 2), pixel, pixel);
 	}
 
-	if (circles.length > 0 && circles[circles.length - 1].y < borders[curry]) {
-		circles[circles.length - 1].y += pixel / 10;
-	}
 
 	fill("grey");
 	stroke("#555555");
@@ -155,3 +154,6 @@ document.addEventListener('keydown', (event) => {
 		pause = !pause;
 	}
 });
+
+window.addEventListener("resize", canvas.center("horizontal"));
+

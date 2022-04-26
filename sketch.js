@@ -22,6 +22,8 @@ var board = ((new Array(row)).fill(0)).map(ele => (new Array(col)).fill("-"));
 
 var canvas;
 
+var gamepads = {};
+
 function setup() {
 	canvas = createCanvas(10 * pixel, 10 * pixel);
 
@@ -39,6 +41,30 @@ function setup() {
 }
 
 function draw() {
+	var gamepads = navigator.getGamepads();
+
+	if (gamepads[0] != undefined && p1) {
+		if (gamepads[0].axes[0] > 0.7) {
+			console.log("right");
+		} else if (gamepads[0].axes[0] < -0.7) {
+			console.log("left");
+		}
+		if (gamepads[0].buttons[0].pressed) {
+			console.log("A");
+		}
+	}
+
+	if (gamepads[1] != undefined && !p1) {
+		if (gamepads[1].axes[0] > 0.7) {
+			console.log("right");
+		} else if (gamepads[1].axes[0] < -0.7) {
+			console.log("left");
+		}
+		if (gamepads[1].buttons[0].pressed) {
+			console.log("A");
+		}
+	}
+
 	clear();
 
 	fill("blue");
@@ -155,5 +181,25 @@ document.addEventListener('keydown', (event) => {
 	}
 });
 
-window.addEventListener("resize", canvas.center("horizontal"));
+window.addEventListener("resize", () => {
+	if (canvas != undefined) {
+		canvas.center("horizontal")
+	}
+});
+
+function gamepadHandler(event, connecting) {
+	var gamepad = event.gamepad;
+	// Note:
+	// gamepad === navigator.getGamepads()[gamepad.index]
+
+	if (connecting) {
+		gamepads[gamepad.index] = gamepad;
+	} else {
+		delete gamepads[gamepad.index];
+	}
+}
+
+window.addEventListener("gamepadconnected", function (e) { gamepadHandler(e, true); }, false);
+window.addEventListener("gamepaddisconnected", function (e) { gamepadHandler(e, false); }, false);
+
 
