@@ -24,6 +24,8 @@ var canvas;
 
 var gamepads = {};
 
+var curr_x = x_mar;
+
 function setup() {
 	canvas = createCanvas(10 * pixel, 10 * pixel);
 
@@ -44,10 +46,10 @@ function draw() {
 	var gamepads = navigator.getGamepads();
 
 	if (gamepads[0] != undefined && p1) {
-		if (gamepads[0].axes[0] > 0.7) {
-			console.log("right");
-		} else if (gamepads[0].axes[0] < -0.7) {
-			console.log("left");
+		if (gamepads[0].axes[0] > 0.7 && curr_x < x_mar + (col * pixel)) {
+			curr_x++;
+		} else if (gamepads[0].axes[0] < -0.7 && curr_x > x_mar) {
+			curr_x--;
 		}
 		if (gamepads[0].buttons[0].pressed) {
 			console.log("A");
@@ -55,10 +57,10 @@ function draw() {
 	}
 
 	if (gamepads[1] != undefined && !p1) {
-		if (gamepads[1].axes[0] > 0.7) {
-			console.log("right");
-		} else if (gamepads[1].axes[0] < -0.7) {
-			console.log("left");
+		if (gamepads[1].axes[0] > 0.7 && curr_x < x_mar + (col * pixel)) {
+			curr_x++;
+		} else if (gamepads[1].axes[0] < -0.7 && curr_x > x_mar) {
+			curr_x--;
 		}
 		if (gamepads[1].buttons[0].pressed) {
 			console.log("A");
