@@ -24,7 +24,7 @@ var canvas;
 
 var gamepads = {};
 
-var curr_x = x_mar;
+var curr_x;
 
 function setup() {
 	canvas = createCanvas(10 * pixel, 10 * pixel);
@@ -36,6 +36,10 @@ function setup() {
 
 	x_mar = ((width - (col * pixel)) / 2);
 	y_mar = ((height - (row * pixel)) / 2);
+
+	curr_x = x_mar;
+
+
 	borders.fill(row * pixel + y_mar - (pixel / 2));
 	textSize(pixel / 2);
 	textAlign(CENTER, CENTER);
