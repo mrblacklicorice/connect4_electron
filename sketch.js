@@ -26,6 +26,8 @@ var gamepads = {};
 
 var curr_x;
 
+var gp_dx = 10;
+
 function setup() {
 	canvas = createCanvas(10 * pixel, 10 * pixel);
 
@@ -51,11 +53,11 @@ function draw() {
 
 	if (gamepads[0] != undefined && p1) {
 		if (gamepads[0].axes[0] > 0.7) {
-			if (curr_x > x_mar + (col * pixel)) curr_x = x_mar + (col * pixel) - 20;
-			curr_x += 10;
+			if (curr_x > x_mar + (col * pixel)) curr_x = x_mar + (col * pixel) - (2 * gp_dx);
+			curr_x += gp_dx;
 		} else if (gamepads[0].axes[0] < -0.7) {
-			if (curr_x < x_mar) curr_x = x_mar + 20;
-			curr_x -= 10;
+			if (curr_x < x_mar) curr_x = x_mar + (2 * gp_dx);
+			curr_x -= gp_dx;
 		}
 		if (gamepads[0].buttons[0].pressed) {
 			onClick();
@@ -64,11 +66,11 @@ function draw() {
 
 	if (gamepads[1] != undefined && !p1) {
 		if (gamepads[1].axes[0] > 0.7) {
-			if (curr_x > x_mar + (col * pixel)) curr_x = x_mar + (col * pixel) - 20;
-			curr_x += 10;
+			if (curr_x > x_mar + (col * pixel)) curr_x = x_mar + (col * pixel) - (2 * gp_dx);
+			curr_x += gp_dx;
 		} else if (gamepads[1].axes[0] < -0.7) {
-			if (curr_x < x_mar) curr_x = x_mar + 20;
-			curr_x -= 10;
+			if (curr_x < x_mar) curr_x = x_mar + (2 * gp_dx);
+			curr_x -= gp_dx;
 		}
 		if (gamepads[1].buttons[0].pressed) {
 			onClick();
