@@ -50,24 +50,28 @@ function draw() {
 	var gamepads = navigator.getGamepads();
 
 	if (gamepads[0] != undefined && p1) {
-		if (gamepads[0].axes[0] > 0.7 && curr_x < x_mar + (col * pixel)) {
-			curr_x++;
-		} else if (gamepads[0].axes[0] < -0.7 && curr_x > x_mar) {
-			curr_x--;
+		if (gamepads[0].axes[0] > 0.7) {
+			if (curr_x > x_mar + (col * pixel)) curr_x = x_mar + (col * pixel) - 20;
+			curr_x += 10;
+		} else if (gamepads[0].axes[0] < -0.7) {
+			if (curr_x < x_mar) curr_x = x_mar + 20;
+			curr_x -= 10;
 		}
 		if (gamepads[0].buttons[0].pressed) {
-			console.log("A");
+			onClick();
 		}
 	}
 
 	if (gamepads[1] != undefined && !p1) {
-		if (gamepads[1].axes[0] > 0.7 && curr_x < x_mar + (col * pixel)) {
-			curr_x++;
-		} else if (gamepads[1].axes[0] < -0.7 && curr_x > x_mar) {
-			curr_x--;
+		if (gamepads[1].axes[0] > 0.7) {
+			if (curr_x > x_mar + (col * pixel)) curr_x = x_mar + (col * pixel) - 20;
+			curr_x += 10;
+		} else if (gamepads[1].axes[0] < -0.7) {
+			if (curr_x < x_mar) curr_x = x_mar + 20;
+			curr_x -= 10;
 		}
 		if (gamepads[1].buttons[0].pressed) {
-			console.log("A");
+			onClick();
 		}
 	}
 
@@ -143,18 +147,25 @@ function draw() {
 }
 
 function mouseClicked() {
-	if (x_mar < mouseX && mouseX < x_mar + (col * pixel) && !pause && (curry == undefined || borders[curry] == circles[circles.length - 1].y) && borders[Math.floor(((mouseX - x_mar) / pixel))] > y_mar + pixel) {
+	onClick();
+}
+
+function onClick() {
+	if (x_mar < curr_x && curr_x < x_mar + (col * pixel) && !pause && (curry == undefined || borders[curry] == circles[circles.length - 1].y) && borders[Math.floor(((curr_x - x_mar) / pixel))] > y_mar + pixel) {
 		if (circles.length > 0 && circles[circles.length - 1].y == borders[curry]) {
 			borders[curry] -= pixel;
 		}
-		circles.push({ x: (Math.floor(((mouseX - x_mar) / pixel)) * pixel) + (pixel / 2) + x_mar, y: y_mar - pixel, c: (p1 ? "blue" : "red") });
+		circles.push({ x: (Math.floor(((curr_x - x_mar) / pixel)) * pixel) + (pixel / 2) + x_mar, y: y_mar - pixel, c: (p1 ? "blue" : "red") });
 		p1 = !p1;
-		curry = Math.floor(((mouseX - x_mar) / pixel));
+		curry = Math.floor(((curr_x - x_mar) / pixel));
 		board[(borders[curry] - y_mar - (pixel / 2)) / pixel][curry] = p1 ? "x" : "o";
 		console.table(board);
 	}
 }
 
+function mouseMoved() {
+	curr_x = mouseX;
+}
 
 function check_win(p) {
 	var tr, tc, i;
