@@ -176,7 +176,6 @@ function onClick() {
 function mouseMoved() {
 	if (navigator.getGamepads().length == 0) curr_x = mouseX;
 	if (navigator.getGamepads().length == 1 && !p1) curr_x = mouseX;
-
 }
 
 function check_win(p) {
