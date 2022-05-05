@@ -51,7 +51,7 @@ function setup() {
 function draw() {
 	var gamepads = navigator.getGamepads();
 
-	if (gamepads[0] != undefined && p1) {
+	if (gamepads[0] != undefined && p1 && !pause) {
 		if (gamepads[0].axes[0] > 0.7) {
 			if (curr_x > x_mar + (col * pixel)) curr_x = x_mar + (col * pixel) - (2 * gp_dx);
 			curr_x += gp_dx;
@@ -64,7 +64,7 @@ function draw() {
 		}
 	}
 
-	if (gamepads[1] != undefined && !p1) {
+	if (gamepads[1] != undefined && !p1 && !pause) {
 		if (gamepads[1].axes[0] > 0.7) {
 			if (curr_x > x_mar + (col * pixel)) curr_x = x_mar + (col * pixel) - (2 * gp_dx);
 			curr_x += gp_dx;
@@ -100,6 +100,14 @@ function draw() {
 	for (let x = 0; x < (col * pixel); x += pixel) {
 		for (let y = 0; y < (row * pixel); y += pixel) {
 			rect(x + x_mar, y + y_mar, pixel, pixel);
+		}
+	}
+
+	fill(9, 163, 58, 127);
+	stroke("#09a33a");
+	if (curr_x > x_mar && curr_x < x_mar + (col * pixel) && !pause) {
+		for (let y = 0; y < (row * pixel); y += pixel) {
+			rect((Math.floor(((curr_x - x_mar) / pixel)) * pixel) + x_mar, y + y_mar, pixel, pixel);
 		}
 	}
 
