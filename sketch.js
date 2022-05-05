@@ -53,10 +53,10 @@ function draw() {
 
 	if (gamepads[0] != undefined && p1 && !pause) {
 		if (gamepads[0].axes[0] > 0.7) {
-			if (curr_x > x_mar + (col * pixel)) curr_x = x_mar + (col * pixel) - (2 * gp_dx);
+			if (curr_x > x_mar + (col * pixel) - (2 * gp_dx)) curr_x = x_mar + (col * pixel) - (2 * gp_dx);
 			curr_x += gp_dx;
 		} else if (gamepads[0].axes[0] < -0.7) {
-			if (curr_x < x_mar) curr_x = x_mar + (2 * gp_dx);
+			if (curr_x < x_mar + (2 * gp_dx)) curr_x = x_mar + (2 * gp_dx);
 			curr_x -= gp_dx;
 		}
 		if (gamepads[0].buttons[0].pressed) {
@@ -66,10 +66,10 @@ function draw() {
 
 	if (gamepads[1] != undefined && !p1 && !pause) {
 		if (gamepads[1].axes[0] > 0.7) {
-			if (curr_x > x_mar + (col * pixel)) curr_x = x_mar + (col * pixel) - (2 * gp_dx);
+			if (curr_x > x_mar + (col * pixel) - (2 * gp_dx)) curr_x = x_mar + (col * pixel) - (2 * gp_dx);
 			curr_x += gp_dx;
 		} else if (gamepads[1].axes[0] < -0.7) {
-			if (curr_x < x_mar) curr_x = x_mar + (2 * gp_dx);
+			if (curr_x < x_mar + (2 * gp_dx)) curr_x = x_mar + (2 * gp_dx);
 			curr_x -= gp_dx;
 		}
 		if (gamepads[1].buttons[0].pressed) {
