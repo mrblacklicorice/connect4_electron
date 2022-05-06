@@ -161,15 +161,16 @@ function mouseClicked() {
 }
 
 function onClick() {
-	if (x_mar < curr_x && curr_x < x_mar + (col * pixel) && !pause && (curry == undefined || borders[curry] == circles[circles.length - 1].y) && borders[Math.floor(((curr_x - x_mar) / pixel))] > y_mar + pixel) {
-		if (circles.length > 0 && circles[circles.length - 1].y == borders[curry]) {
-			borders[curry] -= pixel;
-		}
+	if (circles.length > 0 && circles[circles.length - 1].y == borders[curry]) {
+		borders[curry] -= pixel;
+		curry = undefined;
+	}
+
+	if (x_mar < curr_x && curr_x < x_mar + (col * pixel) && !pause && (curry == undefined || borders[curry] == circles[circles.length - 1].y) && borders[Math.floor(((curr_x - x_mar) / pixel))] >= y_mar + (pixel / 2)) {
 		circles.push({ x: (Math.floor(((curr_x - x_mar) / pixel)) * pixel) + (pixel / 2) + x_mar, y: y_mar - pixel, c: (p1 ? "blue" : "red") });
 		p1 = !p1;
 		curry = Math.floor(((curr_x - x_mar) / pixel));
 		board[(borders[curry] - y_mar - (pixel / 2)) / pixel][curry] = p1 ? "x" : "o";
-		console.table(board);
 	}
 }
 
