@@ -1,6 +1,6 @@
 var circles = [];
 
-let pixel = 70;
+let pixel = 100;
 
 var row = 6;
 var col = 7;
@@ -157,7 +157,7 @@ function draw() {
 }
 
 function mouseClicked() {
-	if (navigator.getGamepads().length == 0 || navigator.getGamepads().length == 1 && !p1) onClick();
+	if (navigator.getGamepads()[0] == null || navigator.getGamepads()[1] == null && !p1) onClick();
 }
 
 function onClick() {
@@ -174,7 +174,7 @@ function onClick() {
 }
 
 function mouseMoved() {
-	if (navigator.getGamepads().length == 0 || navigator.getGamepads().length == 1 && !p1) curr_x = mouseX;
+	if (navigator.getGamepads()[0] == null || navigator.getGamepads()[1] == null && !p1) curr_x = mouseX;
 }
 
 function check_win(p) {

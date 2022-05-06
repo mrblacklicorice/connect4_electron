@@ -1,6 +1,6 @@
 var circles = [];
 
-let pixel = 70;
+let pixel = 100;
 
 var row = 6;
 var col = 7;
@@ -22,6 +22,12 @@ var board = ((new Array(row)).fill(0)).map(ele => (new Array(col)).fill("-"));
 
 var canvas;
 
+var gamepads = {};
+
+var curr_x;
+
+var gp_dx = 10;
+
 function setup() {
 	canvas = createCanvas(10 * pixel, 10 * pixel);
 
@@ -32,6 +38,10 @@ function setup() {
 
 	x_mar = ((width - (col * pixel)) / 2);
 	y_mar = ((height - (row * pixel)) / 2);
+
+	curr_x = x_mar;
+
+
 	borders.fill(row * pixel + y_mar - (pixel / 2));
 	textSize(pixel / 2);
 	textAlign(CENTER, CENTER);
@@ -39,6 +49,34 @@ function setup() {
 }
 
 function draw() {
+	var gamepads = navigator.getGamepads();
+
+	if (gamepads[0] != undefined && p1 && !pause) {
+		if (gamepads[0].axes[0] > 0.7) {
+			if (curr_x > x_mar + (col * pixel) - (2 * gp_dx)) curr_x = x_mar + (col * pixel) - (2 * gp_dx);
+			curr_x += gp_dx;
+		} else if (gamepads[0].axes[0] < -0.7) {
+			if (curr_x < x_mar + (2 * gp_dx)) curr_x = x_mar + (2 * gp_dx);
+			curr_x -= gp_dx;
+		}
+		if (gamepads[0].buttons[0].pressed) {
+			onClick();
+		}
+	}
+
+	if (gamepads[1] != undefined && !p1 && !pause) {
+		if (gamepads[1].axes[0] > 0.7) {
+			if (curr_x > x_mar + (col * pixel) - (2 * gp_dx)) curr_x = x_mar + (col * pixel) - (2 * gp_dx);
+			curr_x += gp_dx;
+		} else if (gamepads[1].axes[0] < -0.7) {
+			if (curr_x < x_mar + (2 * gp_dx)) curr_x = x_mar + (2 * gp_dx);
+			curr_x -= gp_dx;
+		}
+		if (gamepads[1].buttons[0].pressed) {
+			onClick();
+		}
+	}
+
 	clear();
 
 	fill("blue");
@@ -62,6 +100,14 @@ function draw() {
 	for (let x = 0; x < (col * pixel); x += pixel) {
 		for (let y = 0; y < (row * pixel); y += pixel) {
 			rect(x + x_mar, y + y_mar, pixel, pixel);
+		}
+	}
+
+	fill(9, 163, 58, 127);
+	stroke("#09a33a");
+	if (curr_x > x_mar && curr_x < x_mar + (col * pixel) && !pause) {
+		for (let y = 0; y < (row * pixel); y += pixel) {
+			rect((Math.floor(((curr_x - x_mar) / pixel)) * pixel) + x_mar, y + y_mar, pixel, pixel);
 		}
 	}
 
@@ -111,18 +157,25 @@ function draw() {
 }
 
 function mouseClicked() {
-	if (x_mar < mouseX && mouseX < x_mar + (col * pixel) && !pause && (curry == undefined || borders[curry] == circles[circles.length - 1].y) && borders[Math.floor(((mouseX - x_mar) / pixel))] > y_mar + pixel) {
+	if (navigator.getGamepads()[0] == null || navigator.getGamepads()[1] == null && !p1) onClick();
+}
+
+function onClick() {
+	if (x_mar < curr_x && curr_x < x_mar + (col * pixel) && !pause && (curry == undefined || borders[curry] == circles[circles.length - 1].y) && borders[Math.floor(((curr_x - x_mar) / pixel))] > y_mar + pixel) {
 		if (circles.length > 0 && circles[circles.length - 1].y == borders[curry]) {
 			borders[curry] -= pixel;
 		}
-		circles.push({ x: (Math.floor(((mouseX - x_mar) / pixel)) * pixel) + (pixel / 2) + x_mar, y: y_mar - pixel, c: (p1 ? "blue" : "red") });
+		circles.push({ x: (Math.floor(((curr_x - x_mar) / pixel)) * pixel) + (pixel / 2) + x_mar, y: y_mar - pixel, c: (p1 ? "blue" : "red") });
 		p1 = !p1;
-		curry = Math.floor(((mouseX - x_mar) / pixel));
+		curry = Math.floor(((curr_x - x_mar) / pixel));
 		board[(borders[curry] - y_mar - (pixel / 2)) / pixel][curry] = p1 ? "x" : "o";
 		console.table(board);
 	}
 }
 
+function mouseMoved() {
+	if (navigator.getGamepads()[0] == null || navigator.getGamepads()[1] == null && !p1) curr_x = mouseX;
+}
 
 function check_win(p) {
 	var tr, tc, i;
@@ -155,5 +208,25 @@ document.addEventListener('keydown', (event) => {
 	}
 });
 
-window.addEventListener("resize", canvas.center("horizontal"));
+window.addEventListener("resize", () => {
+	if (canvas != undefined) {
+		canvas.center("horizontal")
+	}
+});
+
+function gamepadHandler(event, connecting) {
+	var gamepad = event.gamepad;
+	// Note:
+	// gamepad === navigator.getGamepads()[gamepad.index]
+
+	if (connecting) {
+		gamepads[gamepad.index] = gamepad;
+	} else {
+		delete gamepads[gamepad.index];
+	}
+}
+
+window.addEventListener("gamepadconnected", function (e) { gamepadHandler(e, true); }, false);
+window.addEventListener("gamepaddisconnected", function (e) { gamepadHandler(e, false); }, false);
+
 

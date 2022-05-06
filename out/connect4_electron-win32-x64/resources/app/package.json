@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Connect4 as a downloadable game through electron js",
   "main": "main.js",
+  "icon": "connect4.png",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
