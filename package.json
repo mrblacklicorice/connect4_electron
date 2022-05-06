@@ -1,6 +1,6 @@
 {
   "name": "connect4_electron",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Connect4 as a downloadable game through electron js",
   "main": "main.js",
   "icon": "connect4.png",
